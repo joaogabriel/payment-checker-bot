@@ -1,3 +1,3 @@
-module.export = function () {
+exports.run = function () {
 
-}
+};
