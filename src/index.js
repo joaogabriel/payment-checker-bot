@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const paymentChecker = require('./paymentChecker');
+const port = process.env.PORT || 2020;
 
 app.get('/home', function (req, res) {
 
@@ -17,6 +18,6 @@ app.get('/health', function (req, res) {
     res.send('here!');
 });
 
-app.listen(3000, function () {
-    console.log('server started');
+app.listen(port, function () {
+    console.log(`server started on ${port}`);
 });
