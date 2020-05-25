@@ -14,6 +14,7 @@ app.get('/home', function (req, res) {
 
 app.get('/health', function (req, res) {
     console.log('here!');
+    res.send('here!');
 });
 
 app.listen(3000, function () {
