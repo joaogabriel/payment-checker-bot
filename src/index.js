@@ -12,6 +12,10 @@ app.get('/home', function (req, res) {
 
 });
 
+app.get('/health', function (req, res) {
+    console.log('here!');
+});
+
 app.listen(3000, function () {
     console.log('server started');
 });
