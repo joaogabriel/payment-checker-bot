@@ -32,7 +32,8 @@ exports.run = async function () {
 
     const question = getQuestion(tableContentTds[4]);
 
-    await page.type(question.inputElement, question.answer);
+    // await page.type(question.inputElement, question.answer);
+    await typePageValues(page, question);
 
     await page.click('#login');
 
@@ -58,6 +59,8 @@ exports.run = async function () {
     });
 
     console.log(4)
+
+    await browser.close();
 
     // const inputData = getInputData();
     //
@@ -102,5 +105,31 @@ function readPageValues() {
         personId: process.env.PERSON_ID,
         questions: JSON.parse(process.env.QUESTIONS)
     }
+
+}
+
+const typePageValues = async (page, question) => {
+
+    const inputElement = question.inputElement;
+
+    if (!inputElement.includes(';')) {
+
+        await page.type(question.inputElement, question.answer);
+
+        return;
+
+    }
+
+    const inputElements = inputElement.split(';');
+
+    const answers = question.answer.split(';');
+
+    console.log(inputElements)
+    console.log(answers)
+
+    inputElements.forEach(async function (element, index) {
+        console.log(element, answers[index])
+        await page.type(element, answers[index]);
+    });
 
 }
