@@ -6,8 +6,6 @@ const siteUrl = process.env.SITE_URL || '';
 
 app.get('/home', function (req, res) {
 
-    console.log('teste');
-
     paymentChecker.check();
 
     res.sendStatus(200);
