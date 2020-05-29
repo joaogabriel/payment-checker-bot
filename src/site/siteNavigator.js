@@ -33,7 +33,6 @@ exports.run = async function () {
 
     const question = getQuestion(tableContentTds[4]);
 
-    // await page.type(question.inputElement, question.answer);
     await typePageValues(page, question);
 
     await page.click('#login');

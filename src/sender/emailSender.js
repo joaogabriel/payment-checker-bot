@@ -8,19 +8,16 @@ exports.sendPaymentData = (paymentData) => {
 
     const attachment = fileUtil.getFilePath(paymentData.fileName);
 
-    console.log(attachment);
-
     const data = {
-        from: `Payment Checker Bot <mailgun@${mailData.mailgunDomainName}>`,
-        to: mailData.to,
-        subject: 'Verificação realizada em DATA',
-        text: `Tem ${paymentData.rows} linhas!`,
+        ...createMaingunBasicSenderData(),
+        subject: getSubject(paymentData.rows),
+        text: 'Powered by Payment Checker Bot',
         attachment: attachment
     };
 
     return new Promise(function (resolve, reject) {
 
-        mailgun.messages().send(data, async function (error, body) {
+        mailgun.messages().send(data, function (error, body) {
 
             if (error) {
                 reject(error);
@@ -36,6 +33,22 @@ exports.sendPaymentData = (paymentData) => {
 
 exports.sendError = (error) => {
 
+    const data = {
+        ...createMaingunBasicSenderData(),
+        subject: 'Erro na execução',
+        text: `Erro: ${error}`
+    };
+
+    mailgun.messages().send(data, function (error, body) {
+
+        if (error) {
+            console.error('error on send mail by mailgun', error);
+        }
+
+        console.log('error mail sended');
+
+    });
+
 }
 
 function readPageValues() {
@@ -45,5 +58,26 @@ function readPageValues() {
         mailgunApiKey: process.env.MAILGUN_API_KEY,
         mailgunDomainName: process.env.MAILGUN_DOMAIN_NAME
     }
+
+}
+
+function createMaingunBasicSenderData() {
+
+    return  {
+        from: `Payment Checker Bot <mailgun@${mailData.mailgunDomainName}>`,
+        to: mailData.to
+    }
+
+}
+
+function getSubject(rows) {
+
+    let term = 'boleto';
+
+    if (rows > 1) {
+        term += 's';
+    }
+
+    return `${rows} ${term} em aberto`;
 
 }

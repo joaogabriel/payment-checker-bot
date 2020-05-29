@@ -11,7 +11,6 @@ exports.generateName = () => {
 }
 
 exports.getFilePath = (fileName) => {
-    console.log('appDir', appDir)
     return appDir + path.sep + fileName;
 }
 

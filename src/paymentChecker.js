@@ -8,19 +8,24 @@ exports.check = function () {
 
     siteNavigator.run().then(async paymentData => {
 
-        console.log(paymentData)
-
         emailSender.sendPaymentData(paymentData).then(body => {
-            console.log('oba', body)
+            console.log('mail sended');
         }).catch(error => {
-            console.log('krai', error)
+
+            console.log('krai', error);
+
+            emailSender.sendError(error);
+
         }).finally(() => {
-            console.log('vai remover arquivo agora')
-            // fileUtil.remove(paymentData.fileName);
+            fileUtil.remove(paymentData.fileName);
         });
 
     }).catch(error => {
-        console.error(error)
+
+        console.error(error);
+
+        emailSender.sendError(error);
+
     });
 
 };
