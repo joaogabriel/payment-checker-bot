@@ -1,3 +1,4 @@
+const fs = require('fs');
 
 exports.generateName = () => {
 
@@ -8,5 +9,15 @@ exports.generateName = () => {
 }
 
 exports.remove = (fileName) => {
+
+    fs.unlink(fileName, (error) => {
+
+        if (error) {
+            throw error;
+        }
+
+        return true;
+
+    });
 
 }

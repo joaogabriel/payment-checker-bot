@@ -1,5 +1,6 @@
 const siteNavigator = require('./site/siteNavigator');
-const emailSender = require('./sender/emailSender')
+const emailSender = require('./sender/emailSender');
+const fileUtil = require('./util/fileUtil');
 
 exports.check = function () {
 
@@ -10,6 +11,8 @@ exports.check = function () {
         console.log(paymentData)
 
         emailSender.sendPaymentData(paymentData);
+
+        fileUtil.remove(paymentData.fileName);
 
     }).catch(error => {
         console.error(error)
