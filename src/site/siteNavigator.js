@@ -1,4 +1,5 @@
 const puppeteer = require('puppeteer');
+const fileUtil = require('../util/fileUtil');
 const pageValues = readPageValues();
 
 exports.run = async function () {
@@ -51,30 +52,19 @@ exports.run = async function () {
 
     });
 
-    console.log('rows', rowsNumber)
+    const fileName = fileUtil.generateName();
 
     await page.screenshot({
-        path: 'teste.png',
+        path: fileName,
         fullPage: true
     });
 
-    console.log(4)
-
     await browser.close();
 
-    // const inputData = getInputData();
-    //
-    // await utils.debugScreenshot(page, "main.png");
-    //
-    // if (inputData.process) {
-    //     await removeDuplicateJudmentsFiles(page);
-    // } else {
-    //     await getJudgmentsBetweenDates(page, inputData);
-    // }
-    //
-    // await browser.close();
-
-    // process.exit();
+    return {
+        fileName: fileName,
+        rows: rowsNumber
+    }
 
 }
 
