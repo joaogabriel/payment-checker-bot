@@ -41,7 +41,7 @@ exports.run = async function () {
 
     await page.evaluate(() => enviaParametros('prestacao.asp'));
 
-    await page.waitFor(5000)
+    await page.waitFor(5000);
 
     const rowsNumber = await page.evaluate(() => {
 
@@ -113,12 +113,8 @@ const typePageValues = async (page, question) => {
 
     const answers = question.answer.split(';');
 
-    console.log(inputElements)
-    console.log(answers)
+    await page.type(inputElements[0], answers[0]);
 
-    inputElements.forEach(async function (element, index) {
-        console.log(element, answers[index])
-        await page.type(element, answers[index]);
-    });
+    await page.type(inputElements[1], answers[1]);
 
 }
