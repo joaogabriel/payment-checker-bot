@@ -1,10 +1,9 @@
 const mailData = readPageValues();
 const mailgunJs = require('mailgun-js');
+const mailgun = mailgunJs({apiKey: mailData.mailgunApiKey, domain: mailData.mailgunDomainName});
 const fileUtil = require('../util/fileUtil');
 
 exports.sendPaymentData = (paymentData) => {
-
-    const mailgun = mailgunJs({apiKey: mailData.mailgunApiKey, domain: mailData.mailgunDomainName});
 
     const attachment = fileUtil.getFilePath(paymentData.fileName);
 
