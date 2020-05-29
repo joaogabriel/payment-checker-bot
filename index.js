@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const paymentChecker = require('./paymentChecker');
+const paymentChecker = require('./src/paymentChecker');
 const port = process.env.PORT || 2020;
 const siteUrl = process.env.SITE_URL || '';
 
