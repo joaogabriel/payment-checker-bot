@@ -2,6 +2,7 @@ const mailData = readPageValues();
 const mailgunJs = require('mailgun-js');
 const mailgun = mailgunJs({apiKey: mailData.mailgunApiKey, domain: mailData.mailgunDomainName});
 const fileUtil = require('../util/fileUtil');
+const dateUtil = require('../util/dateUtil');
 
 exports.sendPaymentData = (paymentData) => {
 
@@ -10,7 +11,7 @@ exports.sendPaymentData = (paymentData) => {
     const data = {
         ...createMaingunBasicSenderData(),
         subject: getSubject(paymentData.rows),
-        text: 'Powered by Payment Checker Bot',
+        html: getContentHTML(paymentData.rows),
         attachment: attachment
     };
 
@@ -62,7 +63,7 @@ function readPageValues() {
 
 function createMaingunBasicSenderData() {
 
-    return  {
+    return {
         from: `Payment Checker Bot <mailgun@${mailData.mailgunDomainName}>`,
         to: mailData.to
     }
@@ -71,12 +72,27 @@ function createMaingunBasicSenderData() {
 
 function getSubject(rows) {
 
+    const todayComplete = dateUtil.getTodayComplete();
+
     let term = 'boleto';
 
     if (rows > 1) {
         term += 's';
     }
 
-    return `${rows} ${term} em aberto`;
+    return `${todayComplete} - ${rows} ${term} em aberto`;
+
+}
+
+function getContentHTML(rows) {
+
+    const html =
+        `
+            <p><strong>Mês:</strong> ${dateUtil.getTodayMonthAndYear()}</p>
+            <p><strong>Boletos em aberto:</strong> ${rows}</p>
+            <p><strong>Powered by Payment Checker Bot</strong></p>
+        `;
+
+    return html;
 
 }
