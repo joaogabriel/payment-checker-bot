@@ -79,6 +79,8 @@ const init = async browser => {
 
     await page.goto('http://www1.caixa.gov.br/servico/habitacao/index.asp');
 
+    await page.setDefaultNavigationTimeout(0);
+
     return page;
 
 };
