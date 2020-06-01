@@ -1,9 +1,12 @@
+console.log(1)
 const express = require('express');
+console.log(express)
 const app = express();
+console.log(app)
 const paymentChecker = require('./src/paymentChecker');
+console.log(paymentChecker)
 const port = process.env.PORT || 2020;
-const siteUrl = process.env.SITE_URL || '';
-
+console.log(port)
 app.get('/home', function (req, res) {
 
     paymentChecker.check();
@@ -14,7 +17,7 @@ app.get('/home', function (req, res) {
 
 app.get('/health', function (req, res) {
 
-    const response = `here! url: ${siteUrl}`;
+    const response = 'here!';
 
     console.log(response);
 
