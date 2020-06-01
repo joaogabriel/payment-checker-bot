@@ -11,7 +11,6 @@ exports.get = () => {
             apiKey: process.env.MAILGUN_API_KEY,
             domainName: process.env.MAILGUN_DOMAIN_NAME
         }
-
     }
 
 }

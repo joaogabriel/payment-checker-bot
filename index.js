@@ -1,12 +1,8 @@
-console.log(1)
 const express = require('express');
-console.log(express)
 const app = express();
-console.log(app)
 const paymentChecker = require('./src/paymentChecker');
-console.log(paymentChecker)
 const port = process.env.PORT || 2020;
-console.log(port)
+
 app.get('/home', function (req, res) {
 
     paymentChecker.check();
