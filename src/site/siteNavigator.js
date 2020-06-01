@@ -9,56 +9,28 @@ exports.run = async function () {
 
     const browser = await puppeteer.launch(launchOptions);
 
-    const page = await init(browser);
+    const page = await initPage(browser);
 
-    await page.type('#txtIdentificacao', environment.contractNumber);
+    await typeInitialValues(page);
 
-    await page.type('#txtCpfCgc', environment.personId);
+    const question = await extractQuestion(page);
 
-    await page.click('#login');
+    await typeQuestionValues(page, question);
 
-    await page.waitForNavigation();
-
-    const tableContentTds = await page.evaluate(() => {
-
-        const tds = Array.from(document.querySelectorAll('table tr td'));
-
-        return tds.map(td => td.innerText);
-
-    });
-
-    const question = getQuestion(tableContentTds[4]);
-
-    await typePageValues(page, question);
-
-    await page.click('#login');
-
-    await page.waitForNavigation();
-
+    // enviaParametros is a function of the page that redirects to the billet screen
     await page.evaluate(() => enviaParametros('prestacao.asp'));
 
     await page.waitFor(5000);
 
-    const rowsNumber = await page.evaluate(() => {
+    const rowsNumber = await extractNumberOfRowsOnPaymentTable(page);
 
-        const rows = Array.from(document.querySelectorAll('table.dados_contrato > tbody > tr'));
-
-        return rows.length;
-
-    });
-
-    const fileName = fileUtil.generateName();
-
-    await page.screenshot({
-        path: fileName,
-        fullPage: true
-    });
+    const fileName = await takeScreenshot(page);
 
     await browser.close();
 
     return {
-        fileName: fileName,
-        rows: rowsNumber
+        rows: rowsNumber,
+        fileName: fileName
     }
 
 }
@@ -73,7 +45,7 @@ function getQuestion(questionText) {
 
 }
 
-const init = async browser => {
+const initPage = async browser => {
 
     const page = await browser.newPage();
 
@@ -85,7 +57,7 @@ const init = async browser => {
 
 };
 
-const typePageValues = async (page, question) => {
+const typeQuestionValues = async (page, question) => {
 
     const inputElement = question.inputElement;
 
@@ -104,6 +76,10 @@ const typePageValues = async (page, question) => {
     await page.type(inputElements[0], answers[0]);
 
     await page.type(inputElements[1], answers[1]);
+
+    await page.click('#login');
+
+    await page.waitForNavigation();
 
 }
 
@@ -131,5 +107,60 @@ function getOptions() {
     }
 
     return options;
+
+}
+
+const takeScreenshot = async (page) => {
+
+    const fileName = fileUtil.generateName();
+
+    await page.screenshot({
+        path: fileName,
+        fullPage: true
+    });
+
+    return fileName;
+
+}
+
+async function typeInitialValues(page) {
+
+    await page.type('#txtIdentificacao', environment.contractNumber);
+
+    await page.type('#txtCpfCgc', environment.personId);
+
+    await page.click('#login');
+
+    await page.waitForNavigation();
+
+}
+
+async function extractQuestion(page) {
+
+    const tableContentTds = await page.evaluate(() => {
+
+        const tds = Array.from(document.querySelectorAll('table tr td'));
+
+        return tds.map(td => td.innerText);
+
+    });
+
+    const question = getQuestion(tableContentTds[4]);
+
+    return question;
+
+}
+
+async function extractNumberOfRowsOnPaymentTable(page) {
+
+    const rowsNumber = await page.evaluate(() => {
+
+        const rows = Array.from(document.querySelectorAll('table.dados_contrato > tbody > tr'));
+
+        return rows.length;
+
+    });
+
+    return rowsNumber;
 
 }

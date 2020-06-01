@@ -52,7 +52,7 @@ exports.sendError = (error) => {
 
 }
 
-function createMaingunBasicSenderData() {
+const createMaingunBasicSenderData = () => {
 
     return {
         from: `Payment Checker Bot <mailgun@${environment.mailgun.domainName}>`,
@@ -61,7 +61,7 @@ function createMaingunBasicSenderData() {
 
 }
 
-function getSubject(rows) {
+const getSubject = (rows) => {
 
     const todayComplete = dateUtil.getTodayComplete();
 
@@ -75,7 +75,7 @@ function getSubject(rows) {
 
 }
 
-function getContentHTML(rows) {
+const getContentHTML = (rows) => {
 
     const html =
         `
