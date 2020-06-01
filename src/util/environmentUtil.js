@@ -4,7 +4,7 @@ exports.get = () => {
     return {
         contractNumber: process.env.CONTRACT_NUMBER,
         personId: process.env.PERSON_ID,
-        // questions: JSON.parse(process.env.QUESTIONS),
+        questions: JSON.parse(process.env.QUESTIONS),
         recipientMail: process.env.RECIPIENT_EMAIL,
         environment: process.env.NODE_ENV,
         mailgun: {
