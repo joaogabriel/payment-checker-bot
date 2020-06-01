@@ -7,6 +7,7 @@ exports.get = () => {
         questions: JSON.parse(process.env.QUESTIONS),
         recipientMail: process.env.RECIPIENT_EMAIL,
         environment: process.env.NODE_ENV,
+        accessToken: process.env.ACCESS_TOKEN,
         mailgun: {
             apiKey: process.env.MAILGUN_API_KEY,
             domainName: process.env.MAILGUN_DOMAIN_NAME
