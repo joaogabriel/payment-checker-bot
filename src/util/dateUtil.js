@@ -8,3 +8,11 @@ exports.getTodayMonthAndYear = () => {
 exports.getTodayComplete = () => {
     return format(new Date(), 'dd/MM/yyyy', { locale: dateFnsLocale.ptBR });
 }
+
+exports.isMonday = () => {
+
+    const now = new Date();
+
+    return now.getDay() === 1;
+
+}

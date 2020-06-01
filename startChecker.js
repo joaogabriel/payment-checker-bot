@@ -1,3 +1,6 @@
 const paymentChecker = require('./src/paymentChecker');
+const dateUtil = require('./src/util/dateUtil');
 
-paymentChecker.check();
+if (dateUtil.isMonday()) {
+    paymentChecker.check();
+}
