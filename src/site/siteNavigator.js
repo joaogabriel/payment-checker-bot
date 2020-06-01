@@ -35,7 +35,7 @@ exports.run = async function () {
 
 }
 
-function getQuestion(questionText) {
+const getQuestion = (questionText) => {
 
     const questionFiltered = environment.questions.find(oneQuestion => {
         return oneQuestion.question === questionText;
@@ -83,7 +83,7 @@ const typeQuestionValues = async (page, question) => {
 
 }
 
-function getOptions() {
+const getOptions = () => {
 
     let options = {
         ignoreHTTPSErrors: true,
