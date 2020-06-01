@@ -7,9 +7,6 @@ exports.run = async function () {
 
     const launchOptions = getOptions();
 
-    console.log('environment', environment)
-    console.log('launchOptions', launchOptions)
-
     const browser = await puppeteer.launch(launchOptions);
 
     const page = await init(browser);
