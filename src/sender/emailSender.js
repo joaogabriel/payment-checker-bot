@@ -1,6 +1,7 @@
-const mailData = readPageValues();
+const environmentUtil = require('../util/environmentUtil');
+const environment = environmentUtil.get();
 const mailgunJs = require('mailgun-js');
-const mailgun = mailgunJs({apiKey: mailData.mailgunApiKey, domain: mailData.mailgunDomainName});
+const mailgun = mailgunJs({apiKey: environment.mailgun.apiKey, domain: environment.mailgun.domainName});
 const fileUtil = require('../util/fileUtil');
 const dateUtil = require('../util/dateUtil');
 
@@ -51,21 +52,11 @@ exports.sendError = (error) => {
 
 }
 
-function readPageValues() {
-
-    return {
-        to: process.env.EMAIL,
-        mailgunApiKey: process.env.MAILGUN_API_KEY,
-        mailgunDomainName: process.env.MAILGUN_DOMAIN_NAME
-    }
-
-}
-
 function createMaingunBasicSenderData() {
 
     return {
-        from: `Payment Checker Bot <mailgun@${mailData.mailgunDomainName}>`,
-        to: mailData.to
+        from: `Payment Checker Bot <mailgun@${environment.mailgun.domainName}>`,
+        to: environment.recipientMail
     }
 
 }

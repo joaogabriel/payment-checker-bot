@@ -1,23 +1,19 @@
 const puppeteer = require('puppeteer');
 const fileUtil = require('../util/fileUtil');
-const pageValues = readPageValues();
+const environmentUtil = require('../util/environmentUtil');
+const environment = environmentUtil.get();
 
 exports.run = async function () {
 
-    const browser = await puppeteer.launch({
-        ignoreHTTPSErrors: true,
-        // args: [
-        //     '--no-sandbox',
-        //     '--disable-setuid-sandbox',
-        // ]
-        headless: false, defaultViewport: null, args: ['--start-maximized']
-    });
+    const launchOptions = getOptions();
+
+    const browser = await puppeteer.launch(launchOptions);
 
     const page = await init(browser);
 
-    await page.type('#txtIdentificacao', pageValues.contractNumber);
+    await page.type('#txtIdentificacao', environment.contractNumber);
 
-    await page.type('#txtCpfCgc', pageValues.personId);
+    await page.type('#txtCpfCgc', environment.personId);
 
     await page.click('#login');
 
@@ -69,7 +65,7 @@ exports.run = async function () {
 
 function getQuestion(questionText) {
 
-    const questionFiltered = pageValues.questions.find(oneQuestion => {
+    const questionFiltered = environment.questions.find(oneQuestion => {
         return oneQuestion.question === questionText;
     });
 
@@ -86,16 +82,6 @@ const init = async browser => {
     return page;
 
 };
-
-function readPageValues() {
-
-    return {
-        contractNumber: process.env.CONTRACT_NUMBER,
-        personId: process.env.PERSON_ID,
-        questions: JSON.parse(process.env.QUESTIONS)
-    }
-
-}
 
 const typePageValues = async (page, question) => {
 
@@ -116,5 +102,30 @@ const typePageValues = async (page, question) => {
     await page.type(inputElements[0], answers[0]);
 
     await page.type(inputElements[1], answers[1]);
+
+}
+
+function getOptions() {
+
+    let options = {
+        ignoreHTTPSErrors: true,
+        args: [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+        ]
+    };
+
+    if (environmentUtil.isDev()) {
+
+        options = {
+            ignoreHTTPSErrors: true,
+            headless: false,
+            defaultViewport: null,
+            args: ['--start-maximized']
+        }
+
+    }
+
+    return options;
 
 }
