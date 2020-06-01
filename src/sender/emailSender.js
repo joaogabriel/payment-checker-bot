@@ -67,7 +67,9 @@ const getSubject = (rows) => {
 
     let term = 'boleto';
 
-    if (rows > 1) {
+    if (rows === 0) {
+        rows = 'Nenhum';
+    } else if (rows > 1) {
         term += 's';
     }
 
