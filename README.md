@@ -9,5 +9,4 @@ This is a bot that checks for pending payments. He navigates through a web page,
 - express
 - mailgun-js
 - puppeteer
-- sendgrid
 - date-fns
