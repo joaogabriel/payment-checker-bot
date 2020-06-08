@@ -5,6 +5,8 @@ const environment = environmentUtil.get();
 
 exports.run = async function () {
 
+    console.log('init navigation page');
+
     const launchOptions = getOptions();
 
     const browser = await puppeteer.launch(launchOptions);
@@ -15,12 +17,18 @@ exports.run = async function () {
 
     const question = await extractQuestion(page);
 
+    console.log('question', question);
+
     await typeQuestionValues(page, question);
 
     // enviaParametros is a function of the page that redirects to the billet screen
     await page.evaluate(() => enviaParametros('prestacao.asp'));
 
+    console.log('init enviaParametros');
+
     await page.waitFor(5000);
+
+    console.log('after wait for 5000');
 
     const rowsNumber = await extractNumberOfRowsOnPaymentTable(page);
 
