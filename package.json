@@ -20,7 +20,7 @@
   "homepage": "https://github.com/joaogabriel/payment-checker-bot#readme",
   "dependencies": {
     "date-fns": "^2.14.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "mailgun-js": "^0.22.0",
     "puppeteer": "^3.1.0"
   },
